@@ -1,0 +1,64 @@
+package nyang.puzzlebackend.api.common;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
+import nyang.puzzlebackend.global.error.ErrorContent;
+import org.junit.jupiter.api.Test;
+
+class ApiResponseTest {
+
+    @Test
+    void testSuccessWithNoData() {
+        // Given & When
+        ApiResponse<String> response = ApiResponse.success();
+        
+        // Then
+        assertEquals("SUCCESS", response.result());
+        assertNull(response.data());
+        assertNull(response.error());
+    }
+    
+    @Test
+    void testSuccessWithData() {
+        // Given
+        String testData = "Test data";
+        
+        // When
+        ApiResponse<String> response = ApiResponse.success(testData);
+        
+        // Then
+        assertEquals("SUCCESS", response.result());
+        assertEquals(testData, response.data());
+        assertNull(response.error());
+    }
+    
+    @Test
+    void testError() {
+        // Given
+        ErrorContent errorContent = new ErrorContent("E001", "Test error message");
+        
+        // When
+        ApiResponse<String> response = ApiResponse.error(errorContent);
+        
+        // Then
+        assertEquals("ERROR", response.result());
+        assertNull(response.data());
+        assertEquals(errorContent, response.error());
+        assertEquals("E001", response.error().code());
+        assertEquals("Test error message", response.error().message());
+    }
+    
+    @Test
+    void testRecordEquality() {
+        // Given
+        ApiResponse<String> response1 = ApiResponse.success("data");
+        ApiResponse<String> response2 = ApiResponse.success("data");
+        ApiResponse<String> response3 = ApiResponse.success("different");
+        
+        // Then
+        assertEquals(response1, response2);
+        assertNotEquals(response1, response3);
+    }
+}

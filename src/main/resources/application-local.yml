@@ -1,0 +1,36 @@
+client:
+  callback:
+    front-domain: http://localhost:5173
+    success-path: /main
+    error-path: /login/error
+
+oauth:
+  kakao:
+    client-id: ${vault:oauth.kakao.client-id}
+    client-secret: ${vault:oauth.kakao.client-secret}
+    redirect-url: http://localhost:8080/auth/oauth2/kakao/code
+    oauth-endpoint-uri: https://kauth.kakao.com/oauth/authorize
+    oauth-token-issue-uri: https://kauth.kakao.com/oauth/token
+    oauth-userinfo-uri: https://kapi.kakao.com/v2/user/me
+    oauth-unlink-uri: https://kapi.kakao.com/v1/user/unlink
+    response-type: code
+  google:
+    client-id: ${vault:oauth.google.client-id}
+    client-secret: ${vault:oauth.google.client-secret}
+    redirect-url: http://localhost:8080/auth/oauth2/google/code
+    oauth-endpoint-uri: https://accounts.google.com/o/oauth2/v2/auth
+    oauth-token-issue-uri: https://oauth2.googleapis.com/token
+    oauth-userinfo-uri: https://www.googleapis.com/auth/userinfo.email
+    oauth-unlink-uri: https://oauth2.googleapis.com/revoke
+    scope: [https://www.googleapis.com/auth/userinfo.email]
+    response-type: code
+
+jwt:
+  secret: nyangnyang
+  access-time-sec: 600
+  refresh-time-sec: 86400
+
+spring:
+  docker:
+    compose:
+      enabled: false

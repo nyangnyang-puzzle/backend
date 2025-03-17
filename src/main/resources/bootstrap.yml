@@ -1,0 +1,11 @@
+spring.cloud.vault:
+  scheme: http
+  host: localhost
+  port: 8200
+  authentication: token
+  token: myroottoken
+  enabled: true
+  kv:
+    profiles: local
+    default-context: application
+  application-name: application

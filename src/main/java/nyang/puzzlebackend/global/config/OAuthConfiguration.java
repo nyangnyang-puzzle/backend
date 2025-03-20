@@ -1,10 +1,10 @@
 package nyang.puzzlebackend.global.config;
 
 import nyang.puzzlebackend.auth.oauth.OAuthFrontendProperties;
-import nyang.puzzlebackend.auth.oauth.OAuthProviderFactory;
-import nyang.puzzlebackend.auth.oauth.google.GoogleOAuthProvider;
+import nyang.puzzlebackend.auth.oauth.OAuthClientFactory;
+import nyang.puzzlebackend.auth.oauth.google.GoogleOAuthClient;
 import nyang.puzzlebackend.auth.oauth.google.GoogleProperties;
-import nyang.puzzlebackend.auth.oauth.kakao.KakaoOAuthProvider;
+import nyang.puzzlebackend.auth.oauth.kakao.KakaoOAuthClient;
 import nyang.puzzlebackend.auth.oauth.kakao.KakaoProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +16,6 @@ import org.springframework.context.annotation.Import;
     GoogleProperties.class,
     OAuthFrontendProperties.class
 })
-@Import({OAuthProviderFactory.class, KakaoOAuthProvider.class, GoogleOAuthProvider.class})
+@Import({OAuthClientFactory.class, KakaoOAuthClient.class, GoogleOAuthClient.class})
 public class OAuthConfiguration {
 }

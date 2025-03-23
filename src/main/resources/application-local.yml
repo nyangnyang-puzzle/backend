@@ -25,10 +25,9 @@ oauth:
     scope: [https://www.googleapis.com/auth/userinfo.email]
     response-type: code
 
-jwt:
-  secret: nyangnyang
-  access-time-sec: 600
-  refresh-time-sec: 86400
+jwt.secret: jwt-secret
+jwt.access-time-sec: 3600
+jwt.refresh-time-sec: 86400
 
 spring:
   docker:

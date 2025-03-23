@@ -2,7 +2,6 @@ package nyang.puzzlebackend.auth.oauth.kakao;
 
 import nyang.puzzlebackend.auth.oauth.OAuthTokenRequest;
 import nyang.puzzlebackend.auth.oauth.OAuthClient;
-import nyang.puzzlebackend.auth.oauth.OAuthToken;
 import nyang.puzzlebackend.auth.oauth.OAuthMember;
 import org.springframework.stereotype.Component;
 
@@ -24,12 +23,7 @@ public class KakaoOAuthClient implements OAuthClient {
   }
 
   @Override
-  public OAuthToken getAccessToken(OAuthTokenRequest authRequest) {
-    return null;
-  }
-
-  @Override
-  public OAuthMember getUserProfile(OAuthToken oAuthToken) {
+  public OAuthMember findOAuthMember(OAuthTokenRequest authRequest) {
     return null;
   }
 }

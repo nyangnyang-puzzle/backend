@@ -25,12 +25,7 @@ public class GoogleOAuthClient implements OAuthClient {
   }
 
   @Override
-  public OAuthToken getAccessToken(OAuthTokenRequest authRequest) {
-    return null;
-  }
-
-  @Override
-  public OAuthMember getUserProfile(OAuthToken oAuthToken) {
+  public OAuthMember findOAuthMember(OAuthTokenRequest authRequest) {
     return null;
   }
 }

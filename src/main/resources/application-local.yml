@@ -1,13 +1,27 @@
+logging:
+  level:
+    org.springframework.web.client.RestClient: TRACE
+
+spring:
+  docker:
+    compose:
+      enabled: true
+  data:
+    redis:
+      host: localhost
+      port: 6379 # Redis 서버 포트
+
 client:
   callback:
-    front-domain: http://localhost:5173
+    port: 3000
+    front-domain: http://localhost
     success-path: /main
     error-path: /login/error
 
 oauth:
   kakao:
-    client-id: ${vault:oauth.kakao.client-id}
-    client-secret: ${vault:oauth.kakao.client-secret}
+    client-id: ${OAUTH-KAKAO-CLIENT-ID}
+    client-secret: ${OAUTH-KAKAO-CLIENT-SECRET}
     redirect-url: http://localhost:8080/auth/oauth2/kakao/code
     oauth-endpoint-uri: https://kauth.kakao.com/oauth/authorize
     oauth-token-issue-uri: https://kauth.kakao.com/oauth/token
@@ -15,8 +29,8 @@ oauth:
     oauth-unlink-uri: https://kapi.kakao.com/v1/user/unlink
     response-type: code
   google:
-    client-id: ${vault:oauth.google.client-id}
-    client-secret: ${vault:oauth.google.client-secret}
+    client-id: ${OAUTH-GOOGLE-CLIENT-ID}
+    client-secret: ${OAUTH-GOOGLE-CLIENT-SECRET}
     redirect-url: http://localhost:8080/auth/oauth2/google/code
     oauth-endpoint-uri: https://accounts.google.com/o/oauth2/v2/auth
     oauth-token-issue-uri: https://oauth2.googleapis.com/token
@@ -28,8 +42,3 @@ oauth:
 jwt.secret: jwt-secret
 jwt.access-time-sec: 3600
 jwt.refresh-time-sec: 86400
-
-spring:
-  docker:
-    compose:
-      enabled: false

@@ -41,7 +41,7 @@ public class JwtTokenProvider {
     }
   }
 
-  private String generate(long userId, TokenType tokenType) {
+  private String generate(String userId, TokenType tokenType) {
     final long now = Instant.now().getEpochSecond();
     return JWT.create()
         .withClaim(UID, userId)
@@ -51,11 +51,11 @@ public class JwtTokenProvider {
         .sign(AL);
   }
 
-  public String issueAccessToken(long userId) {
+  public String issueAccessToken(String userId) {
     return generate(userId, TokenType.ACCESS);
   }
 
-  public String issueRefreshToken(long userId) {
+  public String issueRefreshToken(String userId) {
     return generate(userId, TokenType.REFRESH);
   }
 
@@ -70,8 +70,8 @@ public class JwtTokenProvider {
     }
   }
 
-  public long parseUserId(String token) {
-    return JWT.decode(token).getClaim(UID).asLong();
+  public String parseUserId(String token) {
+    return JWT.decode(token).getClaim(UID).asString();
   }
 
   private long getLifeTime(TokenType tokenType) {

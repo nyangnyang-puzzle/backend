@@ -6,5 +6,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public record OAuthFrontendProperties(
     String frontDomain,
     String successPath,
-    String errorPath
+    String errorPath,
+    int port
 ) {}

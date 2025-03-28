@@ -14,7 +14,10 @@ public record OAuthToken(
     Integer accessExpiresIn,
 
     @JsonProperty("refresh_token_expires_in")
-    Integer refreshExpiresIn
+    Integer refreshExpiresIn,
+
+    @JsonProperty("id_token")
+    String idToken
 ) {
 
 }

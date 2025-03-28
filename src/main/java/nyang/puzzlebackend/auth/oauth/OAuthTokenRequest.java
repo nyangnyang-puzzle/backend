@@ -5,4 +5,9 @@ public record OAuthTokenRequest(
     String error,
     String error_description,
     String state
-) { }
+) {
+
+  public boolean isError() {
+    return error == null || error.isEmpty();
+  }
+}

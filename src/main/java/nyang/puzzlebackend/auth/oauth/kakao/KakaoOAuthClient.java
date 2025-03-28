@@ -3,14 +3,12 @@ package nyang.puzzlebackend.auth.oauth.kakao;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import nyang.puzzlebackend.auth.oauth.OAuthToken;
-import nyang.puzzlebackend.auth.oauth.OAuthTokenRequest;
 import nyang.puzzlebackend.auth.oauth.OAuthClient;
 import nyang.puzzlebackend.auth.oauth.OAuthMember;
+import nyang.puzzlebackend.auth.oauth.OAuthToken;
+import nyang.puzzlebackend.auth.oauth.OAuthTokenRequest;
 import nyang.puzzlebackend.global.logging.LoggingInterceptor;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -104,6 +102,7 @@ public class KakaoOAuthClient implements OAuthClient {
     formData.add("client_id", kakaoProperties.clientId());
     formData.add("redirect_uri", kakaoProperties.redirectUrl());
     formData.add("client_secret", kakaoProperties.clientSecret());
+    formData.add("scope", "openid");
     return formData;
   }
 }

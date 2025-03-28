@@ -1,7 +1,7 @@
 package nyang.puzzlebackend.auth.jwt;
 
-import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -15,7 +15,7 @@ class JwtTokenProviderTest {
 
   private JwtTokenProvider jwtTokenProvider;
   private JwtProperties jwtProperties;
-  private long userId;
+  private String userId;
   private final long givenAccessTimeSec = 1L;
   private final long givenRefreshTimeSec = 2L;
   private final String givenSecret = "test-secret";
@@ -27,7 +27,7 @@ class JwtTokenProviderTest {
     when(jwtProperties.accessTimeSec()).thenReturn(givenAccessTimeSec);
     when(jwtProperties.refreshTimeSec()).thenReturn(givenRefreshTimeSec);
     jwtTokenProvider = new JwtTokenProvider(jwtProperties);
-    userId = 123L;
+    userId = "5f9b1f7b9b9b9b9b9b9b9b9b";
   }
 
   @Test
@@ -54,7 +54,7 @@ class JwtTokenProviderTest {
   @DisplayName("유효한 토큰에서 사용자 ID 추출")
   void parseUserId_ValidToken_ReturnsUserId() {
     String accessToken = jwtTokenProvider.issueAccessToken(userId);
-    long parsedUserId = jwtTokenProvider.parseUserId(accessToken);
+    String parsedUserId = jwtTokenProvider.parseUserId(accessToken);
     assertThat(parsedUserId).isEqualTo(userId);
   }
 

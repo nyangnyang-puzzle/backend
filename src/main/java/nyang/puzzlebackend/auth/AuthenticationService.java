@@ -2,13 +2,12 @@ package nyang.puzzlebackend.auth;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
-import java.util.Optional;
 import nyang.puzzlebackend.auth.jwt.AccessRefreshToken;
 import nyang.puzzlebackend.auth.jwt.JwtTokenProvider;
 import nyang.puzzlebackend.auth.oauth.OAuthId;
 import nyang.puzzlebackend.auth.oauth.OAuthProvider;
 import nyang.puzzlebackend.domain.user.User;
-import nyang.puzzlebackend.repository.UserRepository;
+import nyang.puzzlebackend.domain.user.UserRepository;
 import org.bson.types.ObjectId;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;

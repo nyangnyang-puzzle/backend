@@ -11,13 +11,6 @@ spring:
       host: localhost
       port: 6379 # Redis 서버 포트
 
-client:
-  callback:
-    port: 3000
-    front-domain: http://localhost
-    success-path: /main
-    error-path: /login/error
-
 oauth:
   kakao:
     client-id: ${OAUTH-KAKAO-CLIENT-ID}

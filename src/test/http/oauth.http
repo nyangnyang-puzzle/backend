@@ -1,0 +1,24 @@
+### Variables
+@provider = kakao
+@hostName = {{host}}
+@kakaoRedirectUri = {{kakao-redirect-uri}}
+@googleRedirectUri = {{google-redirect-uri}}
+
+### Exchange OAuth Code
+POST http://localhost:8080/auth/oauth2/{{provider}}/exchange
+Content-Type: application/json
+
+{
+  "code": "jzAHbJcEQv2Bp-YeeSv9x7PpS3ofzhC7FQfh_KDaAdD5-V69QZWk3gAAAAQKDR_RAAABld1SO4UBl6J2VXah6g"
+}
+
+### Get OAuth Authorization URI for Kakao
+# @name getKakaoEndpoint
+GET {{hostName}}/auth/oauth2/{{provider}}/endpoint?redirect-uri={{kakaoRedirectUri}}
+
+> {%
+    client.test("Status should be 200", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+    client.global.set("oauth_code", response.body.data.oauth_endpoint);
+%}

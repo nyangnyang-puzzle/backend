@@ -12,7 +12,7 @@ class ApiResponseTest {
     @Test
     void testSuccessWithNoData() {
         // Given & When
-        ApiResponse<String> response = ApiResponse.success();
+        ApiResponse<String> response = ApiResponse.ok("data");
         
         // Then
         assertEquals("SUCCESS", response.result());
@@ -26,10 +26,10 @@ class ApiResponseTest {
         String testData = "Test data";
         
         // When
-        ApiResponse<String> response = ApiResponse.success(testData);
+        ApiResponse<String> response = ApiResponse.ok(testData);
         
         // Then
-        assertEquals("SUCCESS", response.result());
+        assertEquals("success", response.result());
         assertEquals(testData, response.data());
         assertNull(response.error());
     }
@@ -43,7 +43,7 @@ class ApiResponseTest {
         ApiResponse<String> response = ApiResponse.error(errorContent);
         
         // Then
-        assertEquals("ERROR", response.result());
+        assertEquals("error", response.result());
         assertNull(response.data());
         assertEquals(errorContent, response.error());
         assertEquals("E001", response.error().code());
@@ -53,9 +53,9 @@ class ApiResponseTest {
     @Test
     void testRecordEquality() {
         // Given
-        ApiResponse<String> response1 = ApiResponse.success("data");
-        ApiResponse<String> response2 = ApiResponse.success("data");
-        ApiResponse<String> response3 = ApiResponse.success("different");
+        ApiResponse<String> response1 = ApiResponse.ok("data");
+        ApiResponse<String> response2 = ApiResponse.ok("data");
+        ApiResponse<String> response3 = ApiResponse.ok("different");
         
         // Then
         assertEquals(response1, response2);

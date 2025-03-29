@@ -2,6 +2,7 @@ package nyang.puzzlebackend.auth;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
+import nyang.puzzlebackend.api.response.AccessRefreshTokenResponse;
 import nyang.puzzlebackend.auth.jwt.AccessRefreshToken;
 import nyang.puzzlebackend.auth.jwt.JwtTokenProvider;
 import nyang.puzzlebackend.auth.oauth.OAuthId;
@@ -29,12 +30,15 @@ public class AuthenticationService {
     this.redisTemplate = redisTemplate;
   }
 
-  public AccessRefreshToken generateToken(OAuthId oAuthId, OAuthProvider oAuthProvider) {
+  public AccessRefreshTokenResponse generateToken(OAuthId oAuthId, OAuthProvider oAuthProvider) {
     User user = findOAuthUser(oAuthId, oAuthProvider);
     String accessToken = jwtTokenProvider.issueAccessToken(user.id().toString());
     String refreshToken = jwtTokenProvider.issueRefreshToken(user.id().toString());
     saveRefreshToken(user.id(), refreshToken);
-    return new AccessRefreshToken(accessToken, refreshToken);
+    if (user.nickname() == null) {
+      return AccessRefreshToken.newUser(accessToken, refreshToken);
+    }
+    return AccessRefreshToken.of(accessToken, refreshToken, user.nickname());
   }
 
   private void saveRefreshToken(ObjectId userId, String refreshToken) {

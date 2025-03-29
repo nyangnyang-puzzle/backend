@@ -24,7 +24,7 @@ public record ApiResponse<T>(
   }
 
   public static <T> ApiResponse<T> ok(T data) {
-    return new ApiResponse<>("succss", data);
+    return new ApiResponse<>("success", data);
   }
 
   public static <T> ApiResponse<T> error(ErrorContent errorContent) {

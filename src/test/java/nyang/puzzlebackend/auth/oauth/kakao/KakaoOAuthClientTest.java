@@ -15,8 +15,8 @@ class KakaoOAuthClientTest extends TestOAuthClientConfiguration {
   KakaoProperties kakaoProperties;
 
   @Test
-  void getAuthorizationUrl_returnsCorrectUrl() {
-    String uri = kakaoOAuthProvider.getAuthorizationUrl();
+  void getAuthorizationUrl_returnsCorrectUri() {
+    String uri = kakaoOAuthProvider.getAuthorizationUri("http://localhost:8080/auth/oauth2/kakao/callback");
     assertThat(uri).isEqualTo(kakaoProperties.oauthEndpointUri()
         + "?response_type=" + kakaoProperties.responseType()
         + "&client_id=" + kakaoProperties.clientId()

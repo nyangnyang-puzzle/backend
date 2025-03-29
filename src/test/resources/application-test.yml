@@ -1,6 +1,6 @@
 logging:
   level:
-    org.springframework.web.client.RestClient: TRACE
+    '[org.springframework.web.client.RestClient]': TRACE
 
 spring:
   docker:

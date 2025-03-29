@@ -1,6 +1,6 @@
 package nyang.puzzlebackend.auth.oauth;
 
 public interface OAuthClient {
-  String getAuthorizationUrl();
-  OAuthMember findOAuthMember(OAuthTokenRequest authRequest) throws RuntimeException;
+  String getAuthorizationUri(String redirectUri);
+  OAuthMember findOAuthMember(OAuthCodeExchangeRequest authRequest, String redirectUri);
 }

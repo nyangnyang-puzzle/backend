@@ -4,9 +4,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import nyang.puzzlebackend.auth.oauth.OAuthClient;
+import nyang.puzzlebackend.auth.oauth.OAuthCodeExchangeRequest;
 import nyang.puzzlebackend.auth.oauth.OAuthMember;
 import nyang.puzzlebackend.auth.oauth.OAuthToken;
-import nyang.puzzlebackend.auth.oauth.OAuthTokenRequest;
+import nyang.puzzlebackend.auth.oauth.exception.OAuthProcessingException;
 import nyang.puzzlebackend.global.logging.LoggingInterceptor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
@@ -17,92 +18,81 @@ import org.springframework.web.client.RestClient;
 @Slf4j
 @Component
 public class KakaoOAuthClient implements OAuthClient {
+    private static final String CONTENT_TYPE = "Content-Type";
+    private static final String CONTENT_TYPE_VALUE = "application/x-www-form-urlencoded;charset=utf-8";
+    private static final String GRANT_TYPE = "authorization_code";
+    private static final String OPENID_SCOPE = "openid";
 
-  private final RestClient kakaoRestClient;
-  private final KakaoProperties kakaoProperties;
-  private final ObjectMapper objectMapper;
-  private final LoggingInterceptor loggingInterceptor;
+    private final RestClient kakaoRestClient;
+    private final KakaoProperties kakaoProperties;
+    private final ObjectMapper objectMapper;
 
-  public KakaoOAuthClient(KakaoProperties kakaoProperties, ObjectMapper objectMapper,
-      LoggingInterceptor loggingInterceptor) {
-    this.kakaoProperties = kakaoProperties;
-    this.loggingInterceptor = loggingInterceptor;
-    this.kakaoRestClient = RestClient.builder()
-        .requestInterceptor(loggingInterceptor)
-        .build();
-    this.objectMapper = objectMapper;
-  }
-
-  @Override
-  public String getAuthorizationUrl() {
-    return kakaoProperties.oauthEndpointUri()
-        + "?response_type=" + kakaoProperties.responseType()
-        + "&client_id=" + kakaoProperties.clientId()
-        + "&redirect_uri=" + kakaoProperties.redirectUrl();
-  }
-
-  @Override
-  public OAuthMember findOAuthMember(OAuthTokenRequest authRequest) {
-    OAuthToken oAuthToken = getOAuthToken(authRequest.code());
-    return findKakaoMember(oAuthToken);
-  }
-
-  private OAuthMember findKakaoMember(OAuthToken oAuthToken) {
-    var header = kakaoUserRequestHeader(oAuthToken.accessToken());
-    var responseBody = findKakaoUserInfo(header);
-    try {
-      JsonNode jsonNode = objectMapper.readTree(responseBody);
-      long id = jsonNode.get("id").asLong();
-      return OAuthMember.of(
-          String.valueOf(id),
-          oAuthToken.accessToken(),
-          oAuthToken.refreshToken()
-      );
-    } catch (Exception e) {
-      throw new RuntimeException("error");
+    public KakaoOAuthClient(KakaoProperties kakaoProperties, 
+                           ObjectMapper objectMapper,
+                           LoggingInterceptor loggingInterceptor) {
+        this.kakaoProperties = kakaoProperties;
+        this.objectMapper = objectMapper;
+        this.kakaoRestClient = RestClient.builder()
+                .requestInterceptor(loggingInterceptor)
+                .build();
     }
-  }
 
-  private String findKakaoUserInfo(HttpHeaders headers) {
-    return kakaoRestClient.get()
-        .uri(kakaoProperties.oauthUserInfoUri())
-        .header("Content-Type", "application/x-www-form-urlencoded;charset=utf-8")
-        .headers(httpHeaders -> httpHeaders.addAll(headers))
-        .retrieve()
-        .body(String.class);
-  }
+    @Override
+    public String getAuthorizationUri(String redirectUri) {
+        return String.format("%s?response_type=%s&client_id=%s&redirect_uri=%s",
+                kakaoProperties.oauthEndpointUri(),
+                kakaoProperties.responseType(),
+                kakaoProperties.clientId(),
+                redirectUri);
+    }
 
-  private HttpHeaders kakaoUserRequestHeader(String accessToken) {
-    HttpHeaders headers = new HttpHeaders();
-    headers.setBearerAuth(accessToken);
-    return headers;
-  }
+    @Override
+    public OAuthMember findOAuthMember(OAuthCodeExchangeRequest authRequest, String redirectUri) {
+        OAuthToken oAuthToken = exchangeCodeForToken(authRequest.code(), redirectUri);
+        return getKakaoMemberInfo(oAuthToken);
+    }
 
-  private OAuthToken getOAuthToken(String code) {
-    final var formData = setBody(code);
-    var responseEntity = kakaoRestClient.post()
-        .uri(kakaoProperties.oauthTokenIssueUri())
-        .header("Content-Type", "application/x-www-form-urlencoded;charset=utf-8")
-        .body(formData)
-        .retrieve()
-        .onStatus(status -> status.is4xxClientError() || status.is5xxServerError(),
-            (request, response) -> {
-              log.error("Request: {} {}, Response: {} {}", request.getURI(), request.getMethod(),
-                  response.getStatusCode(), response.getStatusText());
-            })
-        .toEntity(OAuthToken.class);
-    log.info("responseEntity.getStatusCode() : {}", responseEntity.getStatusCode());
-    return responseEntity.getBody();
-  }
+    private OAuthMember getKakaoMemberInfo(OAuthToken oAuthToken) {
+        String userInfoResponse = requestKakaoUserInfo(oAuthToken.accessToken());
+        return parseKakaoUserInfo(userInfoResponse, oAuthToken);
+    }
 
-  private MultiValueMap<String, String> setBody(String code) {
-    MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
-    formData.add("code", code);
-    formData.add("grant_type", "authorization_code");
-    formData.add("client_id", kakaoProperties.clientId());
-    formData.add("redirect_uri", kakaoProperties.redirectUrl());
-    formData.add("client_secret", kakaoProperties.clientSecret());
-    formData.add("scope", "openid");
-    return formData;
-  }
+    private String requestKakaoUserInfo(String accessToken) {
+        return kakaoRestClient.get()
+                .uri(kakaoProperties.oauthUserInfoUri())
+                .header(CONTENT_TYPE, CONTENT_TYPE_VALUE)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
+                .retrieve()
+                .body(String.class);
+    }
+
+    private OAuthMember parseKakaoUserInfo(String responseBody, OAuthToken oAuthToken) {
+        try {
+            JsonNode jsonNode = objectMapper.readTree(responseBody);
+            String id = String.valueOf(jsonNode.get("id").asLong());
+            return OAuthMember.of(id, oAuthToken.accessToken(), oAuthToken.refreshToken());
+        } catch (Exception e) {
+            throw new OAuthProcessingException("Failed to parse Kakao user info", e);
+        }
+    }
+
+    private OAuthToken exchangeCodeForToken(String code, String redirectUri) {
+        return kakaoRestClient.post()
+                .uri(kakaoProperties.oauthTokenIssueUri())
+                .header(CONTENT_TYPE, CONTENT_TYPE_VALUE)
+                .body(createTokenRequestBody(code, redirectUri))
+                .retrieve()
+                .body(OAuthToken.class);
+    }
+
+    private MultiValueMap<String, String> createTokenRequestBody(String code, String redirectUri) {
+        MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
+        formData.add("code", code);
+        formData.add("grant_type", GRANT_TYPE);
+        formData.add("client_id", kakaoProperties.clientId());
+        formData.add("redirect_uri", redirectUri);
+        formData.add("client_secret", kakaoProperties.clientSecret());
+        formData.add("scope", OPENID_SCOPE);
+        return formData;
+    }
 }

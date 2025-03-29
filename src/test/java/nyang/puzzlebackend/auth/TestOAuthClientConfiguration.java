@@ -2,7 +2,6 @@ package nyang.puzzlebackend.auth;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import nyang.puzzlebackend.auth.oauth.OAuthFrontendProperties;
 import nyang.puzzlebackend.auth.oauth.OAuthClientFactory;
 import nyang.puzzlebackend.auth.oauth.google.GoogleOAuthClient;
 import nyang.puzzlebackend.auth.oauth.google.GoogleProperties;
@@ -20,7 +19,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(initializers = ConfigDataApplicationContextInitializer.class, classes = OAuthConfiguration.class)
-@TestPropertySource(locations = "/application-test.yml")
+@TestPropertySource(locations = "classpath:application-test.yml")
 public class TestOAuthClientConfiguration {
 
     @Autowired
@@ -31,7 +30,6 @@ public class TestOAuthClientConfiguration {
       assertThat(context.getBean(OAuthConfiguration.class)).isNotNull();
       assertThat(context.getBean(KakaoProperties.class)).isNotNull();
       assertThat(context.getBean(GoogleProperties.class)).isNotNull();
-      assertThat(context.getBean(OAuthFrontendProperties.class)).isNotNull();
       assertThat(context.getBean(OAuthClientFactory.class)).isNotNull();
       assertThat(context.getBean(KakaoOAuthClient.class)).isNotNull();
       assertThat(context.getBean(GoogleOAuthClient.class)).isNotNull();

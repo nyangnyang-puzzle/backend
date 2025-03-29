@@ -1,8 +1,11 @@
 logging:
   level:
-    org.springframework.web.client.RestClient: TRACE
+    '[org.springframework.web.client.RestClient]': TRACE
 
 spring:
+  # 응답 값이 snake_case 로 하기 위함.
+  jackson:
+    property-naming-strategy: SNAKE_CASE
   docker:
     compose:
       enabled: true

@@ -4,4 +4,6 @@ public record AccessRefreshTokenResponse(
     String accessToken,
     String refreshToken,
     String nickname
-) { }
+) {
+
+}

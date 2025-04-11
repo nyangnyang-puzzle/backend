@@ -40,7 +40,6 @@ public class GoogleOAuthClient implements OAuthClient {
   @Override
   public OAuthMember findOAuthMember(OAuthCodeExchangeRequest authRequest, String redirectUri) {
     OAuthToken oAuthToken = getOAuthToken(authRequest.code(), redirectUri);
-    
     DecodedJWT decoder = JWT.decode(oAuthToken.idToken());
     String oauthId = decoder.getClaim("sub").asString();
     return new OAuthMember(oauthId, oAuthToken.accessToken(), oAuthToken.refreshToken());

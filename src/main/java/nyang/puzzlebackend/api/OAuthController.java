@@ -41,7 +41,7 @@ public class OAuthController {
   public ApiResponse<AccessRefreshTokenResponse> exchangeOAuthCodeForTokens(
       @RequestBody OAuthCodeExchangeRequest oauthCodeExchangeRequest,
       @PathVariable String oauthProvider
-  ) {    
+  ) {
     final var oAuthClient = oAuthClientFactory.getOAuthClient(oauthProvider);
     final var oAuthMember = oAuthClient.findOAuthMember(oauthCodeExchangeRequest, oauthCodeExchangeRequest.redirectUri());
     final var tokenResponse = authenticationService.generateToken(OAuthId.from(oAuthMember), OAuthProvider.of(oauthProvider));

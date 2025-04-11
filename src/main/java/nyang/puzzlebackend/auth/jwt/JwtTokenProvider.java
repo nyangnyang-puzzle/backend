@@ -9,9 +9,11 @@ import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import lombok.Getter;
 import org.springframework.stereotype.Component;
 
 @Component
+@Getter
 public class JwtTokenProvider {
 
   private static final String UID = "uid";

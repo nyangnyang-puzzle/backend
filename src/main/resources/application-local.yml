@@ -9,7 +9,10 @@ spring:
   docker:
     compose:
       enabled: true
+      lifecycle-management: start_only
   data:
+    mongodb:
+      uri: mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@localhost:27017/${MONGO_INITDB_DATABASE}
     redis:
       host: localhost
       port: 6379 # Redis 서버 포트
@@ -18,7 +21,6 @@ oauth:
   kakao:
     client-id: ${OAUTH-KAKAO-CLIENT-ID}
     client-secret: ${OAUTH-KAKAO-CLIENT-SECRET}
-    redirect-url: http://localhost:8080/auth/oauth2/kakao/code
     oauth-endpoint-uri: https://kauth.kakao.com/oauth/authorize
     oauth-token-issue-uri: https://kauth.kakao.com/oauth/token
     oauth-userinfo-uri: https://kapi.kakao.com/v2/user/me
@@ -27,7 +29,6 @@ oauth:
   google:
     client-id: ${OAUTH-GOOGLE-CLIENT-ID}
     client-secret: ${OAUTH-GOOGLE-CLIENT-SECRET}
-    redirect-url: http://localhost:8080/auth/oauth2/google/code
     oauth-endpoint-uri: https://accounts.google.com/o/oauth2/v2/auth
     oauth-token-issue-uri: https://oauth2.googleapis.com/token
     oauth-userinfo-uri: https://www.googleapis.com/auth/userinfo.email

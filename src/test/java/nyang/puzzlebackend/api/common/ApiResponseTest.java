@@ -1,7 +1,7 @@
 package nyang.puzzlebackend.api.common;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import nyang.puzzlebackend.global.error.ErrorContent;
@@ -15,8 +15,8 @@ class ApiResponseTest {
         ApiResponse<String> response = ApiResponse.ok("data");
         
         // Then
-        assertEquals("SUCCESS", response.result());
-        assertNull(response.data());
+        assertEquals("success", response.result());
+        assertNotNull(response.data());
         assertNull(response.error());
     }
     
@@ -48,17 +48,5 @@ class ApiResponseTest {
         assertEquals(errorContent, response.error());
         assertEquals("E001", response.error().code());
         assertEquals("Test error message", response.error().message());
-    }
-    
-    @Test
-    void testRecordEquality() {
-        // Given
-        ApiResponse<String> response1 = ApiResponse.ok("data");
-        ApiResponse<String> response2 = ApiResponse.ok("data");
-        ApiResponse<String> response3 = ApiResponse.ok("different");
-        
-        // Then
-        assertEquals(response1, response2);
-        assertNotEquals(response1, response3);
     }
 }

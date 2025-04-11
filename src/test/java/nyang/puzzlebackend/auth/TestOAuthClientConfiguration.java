@@ -8,6 +8,7 @@ import nyang.puzzlebackend.auth.oauth.google.GoogleProperties;
 import nyang.puzzlebackend.auth.oauth.kakao.KakaoOAuthClient;
 import nyang.puzzlebackend.auth.oauth.kakao.KakaoProperties;
 import nyang.puzzlebackend.global.config.OAuthConfiguration;
+import nyang.puzzlebackend.global.config.WebConfig;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,9 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(initializers = ConfigDataApplicationContextInitializer.class, classes = OAuthConfiguration.class)
+@ContextConfiguration(
+    initializers = ConfigDataApplicationContextInitializer.class,
+    classes = {OAuthConfiguration.class, WebConfig.class})
 @TestPropertySource(locations = "classpath:application-test.yml")
 public class TestOAuthClientConfiguration {
 

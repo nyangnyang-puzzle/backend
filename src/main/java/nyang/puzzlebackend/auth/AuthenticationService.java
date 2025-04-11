@@ -42,7 +42,11 @@ public class AuthenticationService {
   }
 
   private void saveRefreshToken(ObjectId userId, String refreshToken) {
-    redisTemplate.opsForValue().set(refreshToken, userId.toString(), Duration.of(86400, ChronoUnit.SECONDS));
+    redisTemplate.opsForValue().set(
+        refreshToken,
+        userId.toString(),
+        Duration.of(jwtTokenProvider.getJwtProperties().refreshTimeSec(), ChronoUnit.SECONDS)
+    );
   }
 
   private User findOAuthUser(OAuthId oAuthId, OAuthProvider provider) {

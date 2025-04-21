@@ -7,11 +7,18 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 public enum ErrorCode {
+  // 인증
+  A001("A001", "헤더에 토큰 정보가 없거나 잘못된 양식의 토큰 정보 입니다.", HttpStatus.UNAUTHORIZED),
+  A002("A002", "유효하지 않은 토큰 값입니다. 다시 로그인 바랍니다.", HttpStatus.UNAUTHORIZED),
 
   // 유저 닉네임
-  U001("UN001", "닉네임은 3 ~ 15자 사이 이어야 합니다.", HttpStatus.CONFLICT),
-  U002("UN002", "닉네임에는 공백이 있을 수 없습니다.", HttpStatus.BAD_REQUEST),
-  U003("UN003", "닉네임을 입력하기 바랍니다.", HttpStatus.BAD_REQUEST),
+  U001("U001", "닉네임은 3 ~ 15자 사이 이어야 합니다.", HttpStatus.CONFLICT),
+  U002("U002", "닉네임에는 공백이 있을 수 없습니다.", HttpStatus.BAD_REQUEST),
+  U003("U002", "닉네임을 입력하기 바랍니다.", HttpStatus.BAD_REQUEST),
+
+  // 유저
+  U004("U004", "존재하지 않거나 이미 탈퇴한 유저입니다.", HttpStatus.FORBIDDEN),
+  U005("U005", "이미 닉네임을 등록하였습니다.", HttpStatus.BAD_REQUEST),
 
   // Uncaught Exception
   X001("X001", "서버에 문제가 발생 하였습니다. 관리자에게 연락해주세요", HttpStatus.INTERNAL_SERVER_ERROR),

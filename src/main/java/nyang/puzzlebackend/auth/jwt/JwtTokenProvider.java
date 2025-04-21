@@ -10,6 +10,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import lombok.Getter;
+import nyang.puzzlebackend.global.error.AuthenticationException;
+import nyang.puzzlebackend.global.error.ErrorCode;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -86,7 +88,7 @@ public class JwtTokenProvider {
   public String parseTokenFromHeader(HttpServletRequest httpServletRequest) {
     final String authorization = httpServletRequest.getHeader("Authorization");
     if (Objects.isNull(authorization) || !authorization.startsWith("Bearer")) {
-      throw new IllegalStateException();
+      throw new AuthenticationException(ErrorCode.A001);
     }
     return authorization.substring(7);
   }

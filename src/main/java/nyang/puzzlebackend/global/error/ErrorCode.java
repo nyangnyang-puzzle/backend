@@ -14,8 +14,6 @@ public enum ErrorCode {
   // 유저 닉네임
   U001("U001", "닉네임은 3 ~ 15자 사이 이어야 합니다.", HttpStatus.CONFLICT),
   U002("U002", "닉네임에는 공백이 있을 수 없습니다.", HttpStatus.BAD_REQUEST),
-  U001("U001", "닉네임은 3 ~ 15자 사이 이어야 합니다.", HttpStatus.CONFLICT),
-  U002("U002", "닉네임에는 공백이 있을 수 없습니다.", HttpStatus.BAD_REQUEST),
   U003("U003", "닉네임을 입력하기 바랍니다.", HttpStatus.BAD_REQUEST),
   // 유저
   U004("U004", "존재하지 않거나 이미 탈퇴한 유저입니다.", HttpStatus.FORBIDDEN),

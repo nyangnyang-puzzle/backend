@@ -69,7 +69,8 @@ public class AuthenticationService {
   public void checkAuthentication(HttpServletRequest request) {
     final String token = jwtTokenProvider.parseTokenFromHeader(request);
     if (!jwtTokenProvider.isValidToken(token)) {
-      log.warn("Invalid JWT token: {}, request: {}", token, request);
+      log.warn("Invalid JWT token received from IP: {}, URI: {}",
+          request.getRemoteAddr(), request.getRequestURI());
       throw new AuthenticationException(ErrorCode.A002);
     }
   }

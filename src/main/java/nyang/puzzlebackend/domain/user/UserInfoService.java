@@ -14,7 +14,7 @@ public class UserInfoService {
 
   private final UserRepository userRepository;
 
-  public void updateNickname(String nickname, AppUser appUser) {
+  public void updateNickname(final String nickname, AppUser appUser) {
     User user = findUser(appUser);
     user.initNickname(nickname);
     userRepository.save(user);

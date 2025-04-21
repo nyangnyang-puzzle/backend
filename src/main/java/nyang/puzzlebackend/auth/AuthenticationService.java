@@ -60,6 +60,9 @@ public class AuthenticationService {
   }
 
   public AppUser findUserByToken(String token) {
+    if (!jwtTokenProvider.isValidToken(token)) {
+      throw new AuthenticationException(ErrorCode.A002);
+    }
     return new AppUser(jwtTokenProvider.parseUserId(token));
   }
 

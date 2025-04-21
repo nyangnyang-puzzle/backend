@@ -1,26 +1,4 @@
 services:
-  backend:
-    restart: always
-    container_name: backend
-    platform: linux/arm64
-    image: asia-northeast3-docker.pkg.dev/nyang-453314/dev-nyang-backend/dev/api:0.155
-    environment:
-      JAVA_TOOL_OPTIONS: -Dspring.profiles.active=dev
-      OAUTH-KAKAO-CLIENT-ID: 673eb79b7224ec2e608d5d18970ffaea
-      OAUTH-KAKAO-CLIENT-SECRET: 5Bqx3nC3mN3jn0rBFvxDxZhzYVoqBz3t
-      OAUTH-GOOGLE-CLIENT-ID: 404158275662-8b5h0crn3ldiu9v8r850soli5mdmiss4.apps.googleusercontent.com
-      OAUTH-GOOGLE-CLIENT-SECRET: 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
-      JWT-SECRET: nyangnyangminshik
-      MONGO_INITDB_DATABASE: mydatabase
-      MONGO_INITDB_ROOT_PASSWORD: secret
-      MONGO_INITDB_ROOT_USERNAME: root
-    depends_on:
-      - mongodb
-      - redis
-    ports:
-      - '9000:8080'
-    networks:
-      - dev-puzzle-net
   mongodb:
     container_name: mongodb
     image: 'mongo:latest'

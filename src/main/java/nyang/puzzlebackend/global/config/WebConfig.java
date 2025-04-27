@@ -1,8 +1,5 @@
 package nyang.puzzlebackend.global.config;
 
-import static com.fasterxml.jackson.databind.PropertyNamingStrategies.SNAKE_CASE;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import nyang.puzzlebackend.auth.AuthPrincipalArgumentResolver;
@@ -41,13 +38,6 @@ public class WebConfig implements WebMvcConfigurer {
   public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
     resolvers.add(authPrincipalArgumentResolver);
     resolvers.add(optionalAuthPrincipalArgumentResolver);
-  }
-
-  @Bean
-  public ObjectMapper objectMapper() {
-    ObjectMapper objectMapper = new ObjectMapper();
-    objectMapper.setPropertyNamingStrategy(SNAKE_CASE);
-    return objectMapper;
   }
 
   @Bean

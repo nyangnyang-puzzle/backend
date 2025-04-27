@@ -1,12 +1,8 @@
 logging:
   level:
     '[org.springframework.web.client.RestClient]': TRACE
-    org:
-      mongodb.driver: debug
-  # 응답 값이 snake_case 로 하기 위함.
+
 spring:
-  jackson:
-    property-naming-strategy: SNAKE_CASE
   data:
     mongodb:
       uri: mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongodb:27017/${MONGO_INITDB_DATABASE}?authSource=admin
@@ -36,5 +32,5 @@ oauth:
     response-type: code
 
 jwt.secret: ${JWT-SECRET}
-jwt.access-time-sec: 3600
-jwt.refresh-time-sec: 86400
+jwt.access-time-sec: 36003600
+jwt.refresh-time-sec: 8640086400

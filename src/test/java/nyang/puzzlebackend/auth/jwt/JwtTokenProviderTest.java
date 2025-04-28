@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import nyang.puzzlebackend.global.error.AuthenticationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -104,6 +105,6 @@ class JwtTokenProviderTest {
     request.addHeader("Authorization", "Bear");
 
     assertThatThrownBy(() -> jwtTokenProvider.parseTokenFromHeader(request))
-        .isInstanceOf(IllegalStateException.class);
+        .isInstanceOf(AuthenticationException.class);
   }
 }

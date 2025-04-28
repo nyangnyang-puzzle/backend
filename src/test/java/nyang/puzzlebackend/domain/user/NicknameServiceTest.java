@@ -34,6 +34,6 @@ class NicknameServiceTest {
     boolean result = nicknameService.checkAvailableNickname(nickname);
 
     // Then
-    assertThat(result).isTrue();
+    assertThat(result).isFalse();
   }
 }

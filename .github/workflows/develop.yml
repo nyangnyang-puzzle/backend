@@ -52,5 +52,5 @@ jobs:
           key: ${{ secrets.DEV_SSH_PRIVATE_KEY }}
           port: ${{ secrets.DEV_SSH_PORT }}
           script: |
-            cd puzzle
+            cd project/puzzle/
             sh dev_run.sh

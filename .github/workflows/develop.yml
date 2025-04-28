@@ -22,7 +22,7 @@ jobs:
         uses: google-github-actions/auth@v2
         with:
           token_format: access_token
-          workload_identity_provider: projects/404158275662/locations/global/workloadIdentityPools/my-pool/providers/msnyang
+          workload_identity_provider: projects/404158275662/locations/global/workloadIdentityPools/my-pool/providers/nyangdevops
           service_account: minshiknyang@nyang-453314.iam.gserviceaccount.com
           access_token_lifetime: 300s
 

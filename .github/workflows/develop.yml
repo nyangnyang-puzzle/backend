@@ -40,7 +40,7 @@ jobs:
           GCP_REPOSITORY: nyangpuzzle/dev/backend-api
           IMAGE_TAG: ${{ steps.image-tag.outputs.IMAGE_TAG }}
         run: |
-          docker buildx build --platform=linux/amd64 -t $GCP_REGISTRY/$GCP_REPOSITORY:$IMAGE_TAG
+          docker buildx build --platform=linux/amd64 -t $GCP_REGISTRY/$GCP_REPOSITORY:${{ steps.get-tag.outputs.short_ref }} .
       - name: Tag Docker image and push to Google Artifact Registry
         uses: docker/build-push-action@v2
         with:

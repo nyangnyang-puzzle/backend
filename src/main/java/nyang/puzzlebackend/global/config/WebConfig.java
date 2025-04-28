@@ -5,8 +5,6 @@ import lombok.RequiredArgsConstructor;
 import nyang.puzzlebackend.auth.AuthPrincipalArgumentResolver;
 import nyang.puzzlebackend.auth.AuthenticationInterceptor;
 import nyang.puzzlebackend.auth.OptionalAuthPrincipalArgumentResolver;
-import nyang.puzzlebackend.global.logging.LoggingInterceptor;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -38,10 +36,5 @@ public class WebConfig implements WebMvcConfigurer {
   public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
     resolvers.add(authPrincipalArgumentResolver);
     resolvers.add(optionalAuthPrincipalArgumentResolver);
-  }
-
-  @Bean
-  LoggingInterceptor loggingInterceptor() {
-    return new LoggingInterceptor();
   }
 }

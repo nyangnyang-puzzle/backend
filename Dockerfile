@@ -14,7 +14,7 @@ RUN chmod +x ./gradlew && \
 
 RUN rm -rf /root/.gradle
 
-FROM openjdk:21-jdk-slim
+FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 
 COPY --from=build /workspace/app/build/libs/*.jar app.jar

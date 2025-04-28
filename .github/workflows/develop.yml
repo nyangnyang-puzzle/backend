@@ -6,48 +6,43 @@ on:
       - develop
 
 jobs:
-  build-and-deploy-dev:
-    name: Build, Dockerized and Deploy to Dev
+  develop-release:
+    name: Tagged Docker release to Google Artifact Registry
     runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
-      - name: Set up JDK 21
-        uses: actions/setup-java@v3
-        with:
-          java-version: '21'
-          distribution: 'temurin'
-      - name: Cache Gradle packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: ${{ runner.os }}-gradle-
-      - name: Gradle Build
-        run: ./gradlew build
+      - id: checkout
+        name: Checkout
+        uses: actions/checkout@v2
 
-      - name: Set up Docker With Buildx
-        uses: docker/setup-buildx-action@v3
-      - name: Determine Image Tag
-        id: image-tag
-        run: |
-          SHORT_SHA=$(echo "${{ github.sha }}" | cut -c -7)
-          IMAGE_TAG="${{ github.run_id }}-${SHORT_SHA}"
-          echo "IMAGE_TAG=$IMAGE_TAG" >> "$GITHUB_OUTPUT"
-      - name: Docker Image Build
-        env:
-          GCP_REGISTRY: asia-northeast3-docker.pkg.dev/nyang-453314
-          GCP_REPOSITORY: nyangpuzzle/dev/backend-api
-          IMAGE_TAG: ${{ steps.image-tag.outputs.IMAGE_TAG }}
-        run: |
-          docker buildx build --platform=linux/amd64 -t $GCP_REGISTRY/$GCP_REPOSITORY:${{ steps.get-tag.outputs.short_ref }} .
-      - name: Tag Docker image and push to Google Artifact Registry
-        uses: docker/build-push-action@v2
+      - id: auth
+        name: Authenticate with Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          token_format: access_token
+          workload_identity_provider: projects/404158275662/locations/global/workloadIdentityPools/my-pool/providers/msnyang
+          service_account: minshiknyang@nyang-453314.iam.gserviceaccount.com
+          access_token_lifetime: 300s
+
+      - name: Docker Auth
+        id: docker-auth
+        uses: docker/login-action@v1
+        with:
+          username: 'oauth2accesstoken'
+          password: '${{ steps.auth.outputs.access_token }}'
+          registry: 'asia-northeast3-docker.pkg.dev'
+
+      - name: Get tag
+        id: get-tag
+        run: echo ::set-output name=short_ref::${GITHUB_REF#refs/*/}
+
+      - name: Tag Docker image Build and Push to Google Artifact Registry
+        uses: docker/build-push-action@v6
         with:
           push: true
-          tags: |
-            asia-northeast3-docker.pkg.dev/nyang-453314/nyangpuzzle/dev/backend-api:${{ steps.get-tag.outputs.short_ref }}
-            asia-northeast3-docker.pkg.dev/nyang-453314/nyangpuzzle/dev/backend-api:latest
+          tags: asia-northeast3-docker.pkg.dev/nyang-453314/nyangpuzzle/dev/backend-api:latest, asia-northeast3-docker.pkg.dev/nyang-453314/nyangpuzzle/dev/backend-api:${{ steps.get-tag.outputs.short_ref }}
 
       - name: Deploy to Development Environment
         uses: appleboy/ssh-action@v1.2.2

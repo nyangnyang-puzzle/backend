@@ -6,7 +6,7 @@ on:
       - develop
 
 jobs:
-  docker-build-and-push:
+  develop-release:
     name: Tagged Docker release to Google Artifact Registry
     runs-on: ubuntu-latest
     permissions:

@@ -31,6 +31,19 @@ oauth:
     scope: [ https://www.googleapis.com/auth/userinfo.email ]
     response-type: code
 
+aws:
+  s3:
+    bucket-name: ${S3-BUCKET-NAME}
+    retrieve-url: ${IMAGE-API}
+
+cloud:
+  aws:
+    credentials:
+      access-key: ${AWS-ACCESS-KEY}
+      secret-key: ${AWS-SECRET-KEY}
+    region:
+      static: ${AWS-REGION}
+
 jwt.secret: ${JWT-SECRET}
 jwt.access-time-sec: 36003600
 jwt.refresh-time-sec: 8640086400

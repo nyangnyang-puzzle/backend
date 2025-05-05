@@ -27,7 +27,10 @@ public class WebConfig implements WebMvcConfigurer {
             "/user/nickname/available-check/**",
 
             // auth
-            "/auth/oauth2/**"
+            "/auth/oauth2/**",
+
+            // s3 presigned url
+            "/api/presigned/upload"
         );
 
   }

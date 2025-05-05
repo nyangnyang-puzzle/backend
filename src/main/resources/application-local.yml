@@ -31,8 +31,22 @@ oauth:
     oauth-token-issue-uri: https://oauth2.googleapis.com/token
     oauth-userinfo-uri: https://www.googleapis.com/auth/userinfo.email
     oauth-unlink-uri: https://oauth2.googleapis.com/revoke
-    scope: [https://www.googleapis.com/auth/userinfo.email]
+    scope: [ https://www.googleapis.com/auth/userinfo.email ]
     response-type: code
+
+aws:
+  s3:
+    bucket-name: nyangpuzzle
+    retrieve-url: ${IMAGE-API}
+
+cloud:
+  aws:
+    credentials:
+      access-key: ${AWS-ACCESS-KEY}
+      secret-key: ${AWS-SECRET-KEY}
+    region:
+      static: ${AWS-REGION}
+
 
 jwt.secret: jwt-secret
 jwt.access-time-sec: 360036003600

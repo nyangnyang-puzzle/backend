@@ -14,6 +14,12 @@ java {
     }
 }
 
+ext {
+    querydslVersion = '5.1.0' // Or your desired:Querydsl versio"
+    mongodbTestcontainersVersion = '1.21.0'
+    testcontainerVersion = '1.21.0'
+}
+
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
@@ -41,28 +47,45 @@ dependencies {
     // mongodb
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 
+    // QueryDSL
+    implementation 'org.mongodb:mongodb-driver-sync:5.2.1'
+    implementation("com.querydsl:querydsl-mongodb:${querydslVersion}") {
+        exclude group: 'org.mongodb', module: 'mongo-java-driver'
+    }
+    implementation "com.querydsl:querydsl-core:${querydslVersion}"
+    implementation "com.querydsl:querydsl-mongodb:${querydslVersion}"
+    annotationProcessor "com.querydsl:querydsl-apt:${querydslVersion}"
+    annotationProcessor 'org.springframework.boot:spring-boot-starter-data-mongodb'
+
     // AWS S3
     implementation platform('software.amazon.awssdk:bom:2.24.7')
     implementation 'software.amazon.awssdk:s3'
     implementation 'software.amazon.awssdk:auth'
     implementation 'software.amazon.awssdk:regions'
 
-    compileOnly 'org.projectlombok:lombok'
+    compileOnly 'org.projectlombok:lombok:1.18.28'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-    testImplementation 'org.testcontainers:junit-jupiter:1.20.6'
-    testImplementation 'com.redis.testcontainers:testcontainers-redis-junit-jupiter:1.4.6'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.testcontainers:junit-jupiter'
+    testImplementation 'org.springframework.boot:spring-boot-testcontainers'
+    testImplementation 'org.testcontainers:mongodb'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 dependencyManagement {
     imports {
-        mavenBom "software.amazon.awssdk:bom:2.24.7" // 예시: 최신 버전으로 변경하세요
+        mavenBom "software.amazon.awssdk:bom:2.24.7"
     }
+}
+
+compileJava {
+    options.compilerArgs += [
+            "-processor", 'lombok.launch.AnnotationProcessorHider$AnnotationProcessor,org.springframework.data.mongodb.repository.support.MongoAnnotationProcessor'
+    ]
 }
 
 tasks.named('test') {

@@ -6,11 +6,11 @@ import nyang.puzzlebackend.domain.puzzle.model.Puzzle;
 import org.springframework.stereotype.Service;
 
 @Service
-public class PuzzleAppendService {
+public class CreatePuzzleService {
 
   private final PuzzleRepository puzzleRepository;
 
-  public PuzzleAppendService(PuzzleRepository puzzleRepository) {
+  public CreatePuzzleService(PuzzleRepository puzzleRepository) {
     this.puzzleRepository = puzzleRepository;
   }
 

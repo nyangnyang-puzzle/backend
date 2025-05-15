@@ -1,5 +1,6 @@
 package nyang.puzzlebackend.domain.puzzle.model;
 
+import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 import org.bson.types.ObjectId;
@@ -24,6 +25,12 @@ public class Puzzle {
   private int perfection;
   private String thumbImage;
 
+  @Field(name = "deleted")
+  private Boolean isDeleted;
+
+  @Field(name = "createdAt")
+  private LocalDateTime createdAt;
+
   @Builder
   public Puzzle(
       final Config config,
@@ -43,5 +50,21 @@ public class Puzzle {
     this.maximumPlayer = maximumPlayer;
     this.perfection = perfection;
     this.thumbImage = thumbImage;
+    this.createdAt = LocalDateTime.now();
+    this.isDeleted = false;
+  }
+
+  @Override
+  public final boolean equals(Object o) {
+    if (!(o instanceof Puzzle puzzle)) {
+      return false;
+    }
+
+    return id.equals(puzzle.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return id.hashCode();
   }
 }

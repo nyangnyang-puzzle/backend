@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import nyang.puzzlebackend.auth.jwt.JwtTokenProvider;
 import nyang.puzzlebackend.global.error.AuthenticationException;
 import org.springframework.core.MethodParameter;
+import org.springframework.core.ResolvableType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -21,8 +22,14 @@ public class OptionalAuthPrincipalArgumentResolver implements HandlerMethodArgum
 
   @Override
   public boolean supportsParameter(MethodParameter parameter) {
-    return parameter.getParameterType() == AppUser.class
-        && parameter.hasParameterAnnotation(OptionalAuthPrincipal.class);
+    if (parameter.getParameterType() == Optional.class && parameter.hasParameterAnnotation(OptionalAuthPrincipal.class)) {
+      ResolvableType parameterType = ResolvableType.forMethodParameter(parameter);
+      if (parameterType.hasGenerics()) {
+        Class<?> genericType = parameterType.getGeneric(0).resolve();
+        return genericType == AppUser.class;
+      }
+    }
+    return false;
   }
 
   @Override

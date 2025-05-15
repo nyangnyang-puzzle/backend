@@ -1,6 +1,5 @@
 package nyang.puzzlebackend.global.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import nyang.puzzlebackend.auth.oauth.OAuthClientFactory;
 import nyang.puzzlebackend.auth.oauth.google.GoogleOAuthClient;
 import nyang.puzzlebackend.auth.oauth.google.GoogleProperties;
@@ -20,11 +19,6 @@ import org.springframework.context.annotation.Import;
 @Import({OAuthClientFactory.class, KakaoOAuthClient.class, GoogleOAuthClient.class})
 public class OAuthConfiguration {
 
-
-  @Bean
-  ObjectMapper objectMapper() {
-    return new ObjectMapper();
-  }
 
   @Bean
   LoggingInterceptor loggingInterceptor() {

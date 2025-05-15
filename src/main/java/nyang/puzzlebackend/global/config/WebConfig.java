@@ -30,7 +30,10 @@ public class WebConfig implements WebMvcConfigurer {
             "/auth/oauth2/**",
 
             // s3 presigned url
-            "/api/presigned/upload"
+            "/api/presigned/upload",
+
+            // retrieve puzzles
+            "/api/puzzles"
         );
 
   }

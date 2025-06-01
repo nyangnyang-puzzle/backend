@@ -46,6 +46,7 @@ public class User {
     this.oauthId = oauthId;
     this.oAuthProvider = oAuthProvider;
     this.isDeleted = false;
+    this.deletedAt = null;
   }
 
   public void initNickname(String nickname) {

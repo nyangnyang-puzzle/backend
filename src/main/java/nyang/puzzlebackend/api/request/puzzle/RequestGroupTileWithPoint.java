@@ -1,10 +1,12 @@
 package nyang.puzzlebackend.api.request.puzzle;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
-@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class RequestGroupTileWithPoint {
   private double x;
   private double y;

@@ -1,9 +1,13 @@
 package nyang.puzzlebackend.api.request.puzzle;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Data
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class PuzzleCreateRequest {
 

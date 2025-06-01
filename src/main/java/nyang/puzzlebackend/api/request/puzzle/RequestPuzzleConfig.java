@@ -1,11 +1,13 @@
 package nyang.puzzlebackend.api.request.puzzle;
 
 import java.util.List;
-import lombok.Builder;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Data
-@Builder
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class RequestPuzzleConfig {
     private List<RequestPuzzleShape> shapes;
     private double imgWidth;

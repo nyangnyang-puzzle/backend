@@ -17,8 +17,8 @@ class JwtTokenProviderTest {
   private JwtTokenProvider jwtTokenProvider;
   private JwtProperties jwtProperties;
   private String userId;
-  private final long givenAccessTimeSec = 1L;
-  private final long givenRefreshTimeSec = 2L;
+  private final long givenAccessTimeSec = 2L;
+  private final long givenRefreshTimeSec = 4L;
   private final String givenSecret = "test-secret";
 
   @BeforeEach

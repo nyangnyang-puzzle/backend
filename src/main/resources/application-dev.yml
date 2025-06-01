@@ -8,7 +8,7 @@ spring:
       uri: mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongodb:27017/${MONGO_INITDB_DATABASE}?authSource=admin
     redis:
       host: ${REDIS_HOST}
-      port: 63790 # Redis 서버 포트
+      port: ${REDIS_PORT}
 
 oauth:
   kakao:

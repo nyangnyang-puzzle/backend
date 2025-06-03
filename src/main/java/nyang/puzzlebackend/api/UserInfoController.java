@@ -26,8 +26,7 @@ public class UserInfoController {
     @Valid @RequestBody ImageRequest imageRequest,
     @AuthPrincipal AppUser appUser
   ) {
-    AppUser appUser1 = new AppUser("683c3d8f820a5135a5bf4828");
-    userInfoService.updateProfileImage(imageRequest.imageUrl(), appUser1);
+    userInfoService.updateProfileImage(imageRequest.imageUrl(), appUser);
     return ApiResponse.ok();
   }
 }

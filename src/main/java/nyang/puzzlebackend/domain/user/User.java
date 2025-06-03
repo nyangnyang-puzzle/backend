@@ -31,6 +31,9 @@ public class User {
   @Indexed(unique = true)
   private String nickname;
 
+  @Field("profileImage")
+  private String profileImage;
+
   @CreatedDate
   private LocalDateTime createdAt;
 
@@ -53,6 +56,17 @@ public class User {
     if (this.nickname != null)
       throw new PuzzleException(ErrorCode.U005);
     this.nickname = nickname;
+  }
+
+  public void updateProfileImg(String imgUrl) {
+    if (this.profileImage == null) {
+      this.profileImage = imgUrl;
+      return;
+    }
+    if (this.profileImage.equals(imgUrl)) {
+      return;
+    }
+    this.profileImage = imgUrl;
   }
 }
 

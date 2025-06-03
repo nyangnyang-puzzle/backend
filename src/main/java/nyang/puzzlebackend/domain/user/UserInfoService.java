@@ -14,6 +14,12 @@ public class UserInfoService {
 
   private final UserRepository userRepository;
 
+  public void updateProfileImage(final String imgUrl, AppUser appUser) {
+    User user = findUser(appUser);
+    user.updateProfileImg(imgUrl);
+    userRepository.save(user);
+  }
+
   public void updateNickname(final String nickname, AppUser appUser) {
     User user = findUser(appUser);
     user.initNickname(nickname);

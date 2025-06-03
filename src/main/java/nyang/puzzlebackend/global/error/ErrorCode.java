@@ -18,6 +18,9 @@ public enum ErrorCode {
   // 유저
   U004("U004", "존재하지 않거나 이미 탈퇴한 유저입니다.", HttpStatus.FORBIDDEN),
   U005("U005", "이미 닉네임을 등록하였습니다.", HttpStatus.BAD_REQUEST),
+  // 유저 이미지
+  U006("U006", "Image URL must not be null", HttpStatus.BAD_REQUEST),
+  U007("U007", "Invalid image URL format or extension", HttpStatus.BAD_REQUEST),
 
   // 이미지
   I001("I001", "upload 하려는 이미지의 확장자는 필수입니다. (허용: JPG, JPEG, PNG, BMP, WEBP, TIFF, TIF, SVG)", HttpStatus.BAD_REQUEST),
